@@ -1,1 +1,88 @@
-venv
+venv# Logs
+logs/
+*.log
+*.log.*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Python / FastAPI
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.pyo
+*.pyd
+
+# Virtual Environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.env
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# PyTest
+.pytest_cache/
+.coverage
+.tox/
+
+# MyPy
+.mypy_cache/
+
+# SQLite database
+*.sqlite3
+*.db
+
+# Coverage reports
+htmlcov/
+.coverage
+.cache
+
+# FastAPI auto-generated static files
+/static/
+
+# React / Frontend
+node_modules/
+*.cache
+*.env.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build directory
+build/
+dist/
+
+# Miscellaneous
+*.bak
+*.swp
+*.swo
+
+# Docker
+docker-compose.override.yml
+docker-compose.override.yaml
+.dockerignore
+docker-compose-debug.yaml
+**/Dockerfile
+
+# Editor-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# macOS specific
+*.DS_Store
+
+# Windows specific
+Thumbs.db
+*.lnk

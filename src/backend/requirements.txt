@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+pandas
+pmdarima
+numpy
+tensorflow
+yfinance
+scikit-learn
+python-dotenv
+statsmodels
+torch
+pytorch-lightning
