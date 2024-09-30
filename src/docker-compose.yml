@@ -13,6 +13,15 @@ services:
     command: npm run preview -- --host 0.0.0.0
     networks:
       - app-tier
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        tag: "frontend-log"
+    # Save logs to a file on the host machine
+    volumes:
+      - ./logs:/var/lib/docker/containers
 
 
   postgres:
@@ -46,6 +55,14 @@ services:
     container_name: backend
     networks:
       - app-tier
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        tag: "backend-log"
+    volumes:
+      - ./logs:/var/lib/docker/containers
 
 networks:
   app-tier:

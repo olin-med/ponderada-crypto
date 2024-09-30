@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from '../axiosConfig';
 import { Line } from 'react-chartjs-2';
-
 import {
   Chart as ChartJS,
   LineElement,
@@ -12,7 +11,6 @@ import {
   Legend,
   Title,
 } from 'chart.js';
-
 import type { ChartOptions } from 'chart.js';
 
 ChartJS.register(
@@ -61,7 +59,7 @@ const ModelTrainer: React.FC = () => {
     setError(null);
     try {
       const response = await axios.get<PredictionResponse>('/predict/', {
-        params: { days: 5 },
+        params: { days: 30 },
       });
 
       console.log('Predict response data:', response.data);
@@ -84,35 +82,33 @@ const ModelTrainer: React.FC = () => {
   const predictionPrices = predictions?.prices.map(Number) || [];
   const predictionDates = predictions?.dates || [];
 
-  // Combine dates for labels
-  const labels = [...historicalDates, ...predictionDates];
-
-  // Prepare datasets
-  const datasets = [
-    {
-      label: 'Historical Data',
-      data: [...historicalPrices, ...new Array(predictionPrices.length).fill(null)],
-      borderColor: 'rgb(59, 130, 246)', // Tailwind blue-500
-      backgroundColor: 'rgba(59, 130, 246, 0.5)',
-      pointRadius: 0, // Remove points for historical data
-      fill: false,
-    },
-    {
-      label: 'Predictions',
-      data: [...new Array(historicalPrices.length).fill(null), ...predictionPrices],
-      borderColor: 'rgb(34, 197, 94)', // Tailwind green-500
-      backgroundColor: 'rgba(34, 197, 94, 0.5)',
-      borderDash: [5, 5], // Make the prediction line dashed
-      pointRadius: 5, // Emphasize prediction points
-      pointBackgroundColor: 'rgb(34, 197, 94)',
-      fill: false,
-    },
-  ];
-
+  // Prepare datasets with clear separation
   const data = {
-    labels,
-    datasets,
+    labels: [...historicalDates, ...predictionDates],
+    datasets: [
+      {
+        label: 'Dados Históricos',
+        data: historicalPrices,
+        borderColor: 'rgb(59, 130, 246)', // Tailwind blue-500
+        backgroundColor: 'rgba(59, 130, 246, 0.2)', // Lower opacity
+        borderWidth: 1, // Thinner line
+        pointRadius: 1, // No points to keep the line clean
+        fill: false,
+      },
+      {
+        label: 'Previsões',
+        data: new Array(historicalPrices.length).fill(null).concat(predictionPrices),
+        borderColor: 'rgb(34, 197, 94)', // Tailwind green-500
+        backgroundColor: 'rgba(34, 197, 94, 0.2)', // Lower opacity
+        borderWidth: 1, // Slightly thicker line to emphasize predictions
+        pointRadius: 1, // Add small points for prediction
+        pointBackgroundColor: 'rgb(34, 197, 94)',
+        pointBorderWidth: 1,
+        fill: false,
+      },
+    ],
   };
+  
 
   const options: ChartOptions<'line'> = {
     responsive: true,
@@ -132,7 +128,7 @@ const ModelTrainer: React.FC = () => {
       },
       title: {
         display: true,
-        text: 'BTC-USD Historical Prices and Predictions',
+        text: 'BTC-USD Preços Históricos e Previsões',
         font: {
           size: 20,
         },
@@ -146,7 +142,7 @@ const ModelTrainer: React.FC = () => {
       x: {
         title: {
           display: true,
-          text: 'Date',
+          text: 'Data',
           font: {
             size: 16,
           },
@@ -163,7 +159,7 @@ const ModelTrainer: React.FC = () => {
       y: {
         title: {
           display: true,
-          text: 'Price (USD)',
+          text: 'Preço (USD)',
           font: {
             size: 16,
           },
@@ -193,10 +189,10 @@ const ModelTrainer: React.FC = () => {
               Home
             </a>
             <a href="#" className="text-gray-800 hover:text-blue-500 mx-4">
-              About
+              Sobre
             </a>
             <a href="#" className="text-gray-800 hover:text-blue-500 mx-4">
-              Contact
+              Contato
             </a>
           </div>
         </div>
@@ -206,7 +202,7 @@ const ModelTrainer: React.FC = () => {
       <div className="w-screen mx-auto p-6">
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-3xl font-bold mb-4 text-center">
-            BTC-USD Price Prediction
+            Predição de Preço BTC-USD 
           </h2>
 
           <div className="flex justify-center space-x-4 mb-6">
@@ -217,14 +213,14 @@ const ModelTrainer: React.FC = () => {
               } text-white font-semibold`}
               disabled={isTraining}
             >
-              {isTraining ? 'Training...' : 'Train Model'}
+              {isTraining ? 'Treinando...' : 'Treinar Modelo'}
             </button>
 
             <button
               onClick={handlePredict}
               className="px-6 py-2 bg-green-500 hover:bg-green-600 rounded text-white font-semibold"
             >
-              Predict
+              Predição
             </button>
           </div>
 
@@ -240,14 +236,14 @@ const ModelTrainer: React.FC = () => {
               {predictionPrices.length > 0 && (
                 <div className="mt-8">
                   <h3 className="text-xl font-semibold mb-4 text-center">
-                    Prediction Values
+                    Valores Previstos
                   </h3>
                   <div className="bg-gray-100 p-4 rounded-lg shadow">
                     <table className="min-w-full table-auto">
                       <thead>
                         <tr className="bg-gray-200">
                           <th className="px-4 py-2 text-left text-gray-600 font-medium">Date</th>
-                          <th className="px-4 py-2 text-left text-gray-600 font-medium">Predicted Price (USD)</th>
+                          <th className="px-4 py-2 text-left text-gray-600 font-medium"> Preço Previsto (USD)</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -265,7 +261,7 @@ const ModelTrainer: React.FC = () => {
             </>
           ) : (
             <p className="text-center text-gray-600">
-              Click "Predict" to display the chart.
+              Clique Prever para gerar o gráfico e as previsões.
             </p>
           )}
         </div>
@@ -274,7 +270,7 @@ const ModelTrainer: React.FC = () => {
       {/* Footer */}
       <footer className="bg-white shadow mt-10">
         <div className="max-w-7xl mx-auto px-4 py-6 text-center text-gray-600">
-          &copy; {new Date().getFullYear()} CryptoPredictor. All rights reserved.
+          &copy; {new Date().getFullYear()} Ólin Costa
         </div>
       </footer>
     </div>
